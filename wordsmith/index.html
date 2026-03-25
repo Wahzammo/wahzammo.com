@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wordsmith | Legacy Tools</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- PDF.js for Reading PDFs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- DOCX.js for Writing DOCX -->
+  <script src="https://unpkg.com/docx@8.2.3/build/index.js"></script>
+  
+  <!-- Mammoth JS for Reading DOCX -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <!-- html2pdf for Writing PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    body { justify-content: flex-start; }
+    .tool-header { text-align: center; margin-bottom: 2rem; }
+    .tool-container {
+      max-width: 700px; margin: 0 auto;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 16px; padding: 3rem; backdrop-filter: var(--glass-blur);
+    }
+    
+    .tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 2rem; }
+    .tab {
+      padding: 1rem 2rem; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; font-weight: 600; transition: var(--transition);
+    }
+    .tab:hover { color: #fff; }
+    .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+    
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    
+    .upload-area {
+      border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 3rem; text-align: center;
+      cursor: pointer; transition: var(--transition); margin-bottom: 1.5rem;
+    }
+    .upload-area:hover, .upload-area.dragover { border-color: #3b82f6; background: rgba(59,130,246,0.05); }
+    .upload-area i { font-size: 3rem; color: #3b82f6; margin-bottom: 1rem; }
+    
+    .btn {
+      background: #3b82f6; color: #fff; border: none; padding: 1rem 2rem; border-radius: 8px;
+      font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: var(--transition); display: none; margin-top: 1rem;
+    }
+    .btn:hover { background: #2563eb; box-shadow: 0 0 15px rgba(59,130,246,0.4); }
+    .btn:disabled { background: #475569; cursor: not-allowed; box-shadow: none; }
+    
+    .status { margin-top: 1rem; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+    .error { color: #ef4444; }
+    
+    .back-link {
+       position: absolute; top: 2rem; left: 2rem; color: var(--text-muted);
+       text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition);
+    }
+    .back-link:hover { color: #fff; }
+    
+    #hidden-render-area { display: none; }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back-link"><i class="ph ph-arrow-left"></i> Back to Shrine</a>
+
+  <div style="margin-top: 5rem; width: 100%;">
+    <div class="tool-header">
+      <h1 style="color: #fff; font-size: 2.5rem; margin-bottom: 0.5rem;">Wordsmith</h1>
+      <p style="color: var(--text-muted);">Client-side document conversion for maximum privacy.</p>
+    </div>
+
+    <div class="tool-container">
+      
+      <div class="tabs">
+        <div class="tab active" data-target="pdf-to-docx">PDF to DOCX</div>
+        <div class="tab" data-target="docx-to-pdf">DOCX to PDF</div>
+      </div>
+      
+      <div id="pdf-to-docx" class="tab-content active">
+        <div class="upload-area" id="dropPdf">
+          <i class="ph ph-file-pdf"></i>
+          <h3>Drop your .pdf here</h3>
+          <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">or click to browse</p>
+          <input type="file" id="pdfInput" accept=".pdf" style="display: none;">
+        </div>
+        <div id="pdfStatus" class="status"></div>
+        <button id="convertPdfBtn" class="btn">Convert to DOCX</button>
+      </div>
+      
+      <div id="docx-to-pdf" class="tab-content">
+        <div class="upload-area" id="dropDocx" style="border-color: rgba(255,255,255,0.2);">
+          <i class="ph ph-file-doc"></i>
+          <h3>Drop your .docx here</h3>
+          <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">or click to browse</p>
+          <input type="file" id="docxInput" accept=".docx" style="display: none;">
+        </div>
+        <div id="docxStatus" class="status"></div>
+        <button id="convertDocxBtn" class="btn">Convert to PDF</button>
+      </div>
+
+    </div>
+  </div>
+  
+  <div id="hidden-render-area"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

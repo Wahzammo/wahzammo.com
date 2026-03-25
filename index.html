@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legacy Tools | A Shrine to Web Dev</title>
+  <meta name="description" content="A collection of web development rites of passage, fully client-side and free forever.">
+  <link rel="stylesheet" href="style.css">
+  <!-- Load Phosphor Icons for premium SVG icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Legacy Tools Shrine</h1>
+    <p>A collection of essential, rite-of-passage web development utilities. Designed to run blazingly fast in your browser, respecting privacy, and costing next to nothing.</p>
+  </header>
+
+  <main class="container">
+    
+    <a href="/wallbreaker" class="card wallbreaker">
+      <div class="card-icon">
+        <i class="ph ph-file-xls"></i>
+      </div>
+      <h2 class="card-title">Wallbreaker</h2>
+      <p class="card-desc">Unlock stubborn Excel sheets instantly. Runs locally via Pyodide without uploading your sensitive financial data to an unknown server.</p>
+      <div class="card-footer">Break standard protections</div>
+    </a>
+
+    <a href="/warpspeed" class="card warpspeed">
+      <div class="card-icon">
+        <i class="ph ph-youtube-logo"></i>
+      </div>
+      <h2 class="card-title">Warpspeed</h2>
+      <p class="card-desc">Extract flawless MP3 audio directly from YouTube URLs. Employs a blazing fast yt-dlp backend proxy for seamless media retrieval.</p>
+      <div class="card-footer">Extract Audio</div>
+    </a>
+
+    <a href="/wipeout" class="card wipeout">
+      <div class="card-icon">
+        <i class="ph ph-eraser"></i>
+      </div>
+      <h2 class="card-title">Wipeout</h2>
+      <p class="card-desc">The ultimate image background remover tool using browser-based AI segmentation. No subscriptions required.</p>
+      <div class="card-footer">Clear Backgrounds</div>
+    </a>
+
+    <a href="/wishlist" class="card wishlist">
+      <div class="card-icon">
+        <i class="ph ph-shopping-cart"></i>
+      </div>
+      <h2 class="card-title">Wishlist</h2>
+      <p class="card-desc">Enter a topic and watch as we randomly curate the perfect Amazon wishlist using our custom proxy API.</p>
+      <div class="card-footer">Curate Items</div>
+    </a>
+
+    <a href="/wordsmith" class="card wordsmith">
+      <div class="card-icon">
+        <i class="ph ph-file-pdf"></i>
+      </div>
+      <h2 class="card-title">Wordsmith</h2>
+      <p class="card-desc">Convert cumbersome PDFs to editable DOCX text or vice-versa, completely in the browser for full document security.</p>
+      <div class="card-footer">Convert Documents</div>
+    </a>
+
+  </main>
+
+  <script>
+    // Add entrance animation staggering
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)';
+        
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+          
+          // Remove inline styles after animation to allow hover effects to work
+          setTimeout(() => {
+            card.style.transition = '';
+            card.style.transform = '';
+            card.style.opacity = '';
+          }, 500);
+        }, 100 + (index * 100));
+      });
+    });
+  </script>
+</body>
+</html>

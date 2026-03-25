@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wallbreaker | Legacy Tools</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- Load Pyodide -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+  <style>
+    body {
+      justify-content: flex-start;
+    }
+    .tool-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .tool-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 3rem;
+      backdrop-filter: var(--glass-blur);
+    }
+    .upload-area {
+      border: 2px dashed rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 3rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 1.5rem;
+    }
+    .upload-area:hover, .upload-area.dragover {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.05);
+    }
+    .upload-area i {
+      font-size: 3rem;
+      color: #10b981;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      background: #10b981;
+      color: #fff;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: var(--transition);
+      display: none;
+    }
+    .btn:hover {
+      background: #059669;
+      box-shadow: 0 0 15px rgba(16,185,129,0.4);
+    }
+    .btn:disabled {
+      background: #475569;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .status {
+      margin-top: 1rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .back-link {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back-link"><i class="ph ph-arrow-left"></i> Back to Shrine</a>
+
+  <div style="margin-top: 5rem; width: 100%;">
+    <div class="tool-header">
+      <h1 style="color: #fff; font-size: 2.5rem; margin-bottom: 0.5rem;">Wallbreaker</h1>
+      <p style="color: var(--text-muted);">Instantly unlock protected Excel sheets in your browser.</p>
+    </div>
+
+    <div class="tool-container">
+      <div class="upload-area" id="dropzone">
+        <i class="ph ph-file-xls"></i>
+        <h3>Drop your protected .xlsx here</h3>
+        <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">or click to browse files</p>
+        <input type="file" id="fileInput" accept=".xlsx" style="display: none;">
+      </div>
+
+      <button id="processBtn" class="btn">Unlock Workbook</button>
+      <div id="status" class="status">Initializing Pyodide (Python Engine)... please wait.</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

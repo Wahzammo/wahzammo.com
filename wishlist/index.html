@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wishlist | Legacy Tools</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    body { justify-content: flex-start; }
+    .tool-header { text-align: center; margin-bottom: 2rem; }
+    .tool-container {
+      max-width: 900px; margin: 0 auto;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 16px; padding: 3rem; backdrop-filter: var(--glass-blur);
+    }
+    .input-group {
+      display: flex; gap: 1rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;
+    }
+    .input-group input {
+      flex: 1; padding: 1rem 1.5rem; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);
+      color: #fff; font-size: 1rem; font-family: inherit;
+      transition: var(--transition); outline: none;
+    }
+    .input-group input:focus { border-color: #f97316; }
+    .btn {
+      background: #f97316; color: #fff; border: none;
+      padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 0.5rem;
+    }
+    .btn:hover { background: #ea580c; box-shadow: 0 0 15px rgba(249,115,22,0.4); }
+    .btn:disabled { background: #475569; cursor: not-allowed; box-shadow: none; }
+    
+    .status-area { text-align: center; margin-top: 1rem; display: none; }
+    .spinner {
+      border: 4px solid rgba(255,255,255,0.1); border-left-color: #f97316;
+      border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    
+    .error { color: #ef4444; font-size: 0.95rem; margin-top: 1rem; }
+    
+    .back-link {
+       position: absolute; top: 2rem; left: 2rem; color: var(--text-muted);
+       text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition);
+    }
+    .back-link:hover { color: #fff; }
+
+    /* Product Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .product-card {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card:hover { border-color: #f97316; transform: translateY(-3px); }
+    .product-img { width: 100%; height: 160px; object-fit: contain; border-radius: 8px; margin-bottom: 1rem; background: #fff; }
+    .product-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .product-price { color: #10b981; font-weight: 800; font-size: 1.1rem; margin-bottom: 1rem; flex-grow: 1;}
+    .product-link {
+      background: #f97316; color: #fff; text-decoration: none; padding: 0.5rem;
+      border-radius: 6px; font-size: 0.85rem; font-weight: 600; display: inline-block;
+      transition: var(--transition);
+    }
+    .product-link:hover { background: #ea580c; }
+    
+    .backend-note {
+      margin-top: 2rem; padding: 1rem; border-radius: 8px; background: rgba(249,115,22,0.05);
+      border: 1px dashed rgba(249,115,22,0.3); font-size: 0.85rem; color: var(--text-muted); text-align: left;
+    }
+    .backend-note code { background: rgba(0,0,0,0.3); padding: 0.2rem 0.4rem; border-radius: 4px; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back-link"><i class="ph ph-arrow-left"></i> Back to Shrine</a>
+
+  <div style="margin-top: 5rem; width: 100%;">
+    <div class="tool-header">
+      <h1 style="color: #fff; font-size: 2.5rem; margin-bottom: 0.5rem;">Wishlist</h1>
+      <p style="color: var(--text-muted);">Enter a topic and we'll randomly curate 8 Amazon items just for you.</p>
+    </div>
+
+    <div class="tool-container">
+      <div class="input-group">
+        <input type="text" id="topicInput" placeholder="e.g., cyberpunk desk setup, vintage gaming..." required>
+        <button id="searchBtn" class="btn"><i class="ph ph-magic-wand"></i> Curate</button>
+      </div>
+
+      <div class="status-area" id="statusArea">
+        <div class="spinner" id="spinner"></div>
+        <div id="statusText">Consulting the Amazon proxy worker...</div>
+      </div>
+      
+      <div class="grid" id="productGrid"></div>
+      
+      <div class="backend-note">
+        <strong>Setup Note:</strong> This frontend hits a free Cloudflare Worker to fetch data from Amazon (which normally blocks client-side requests). 
+        You will need to update the endpoint <code>WORKER_URL</code> in script.js once you deploy your worker proxy.
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
