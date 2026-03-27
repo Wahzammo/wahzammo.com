@@ -8,7 +8,7 @@ const statusText = document.getElementById('statusText');
 // Local dev: cd services/warpspeed && python app.py
 const WORKER_URL = window.location.hostname === 'localhost'
   ? 'http://localhost:8080/api/convert'
-  : 'https://warpspeed-REPLACE_AFTER_DEPLOY.a.run.app/api/convert';
+  : 'https://warpspeed-43373392668.us-central1.run.app/api/convert';
 
 convertBtn.addEventListener('click', async () => {
   const url = ytUrlInput.value.trim();
