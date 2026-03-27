@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Whiteout | Legacy Tools</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exif-js@2.3.0/exif.min.js"></script>
+  <style>
+    body {
+      justify-content: flex-start;
+    }
+    .tool-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .tool-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 3rem;
+      backdrop-filter: var(--glass-blur);
+    }
+    .upload-area {
+      border: 2px dashed rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 3rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 1.5rem;
+    }
+    .upload-area:hover, .upload-area.dragover {
+      border-color: #f43f5e;
+      background: rgba(244, 63, 94, 0.05);
+    }
+    .upload-area i {
+      font-size: 3rem;
+      color: #f43f5e;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      background: #f43f5e;
+      color: #fff;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: var(--transition);
+      display: none;
+    }
+    .btn:hover {
+      background: #e11d48;
+      box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+    }
+    .btn:disabled {
+      background: #475569;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .status {
+      margin-top: 1rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .back-link {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      color: #fff;
+    }
+    .metadata-section {
+      display: none;
+      margin-bottom: 1.5rem;
+    }
+    .metadata-section h3 {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      color: #f43f5e;
+    }
+    .metadata-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .metadata-col h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .metadata-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .metadata-table td {
+      padding: 0.4rem 0.5rem;
+      font-size: 0.85rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .metadata-table td:first-child {
+      color: var(--text-muted);
+      width: 40%;
+    }
+    .metadata-table .stripped {
+      color: #10b981;
+      font-weight: 600;
+    }
+    .format-selector {
+      display: none;
+      margin-bottom: 1.5rem;
+    }
+    .format-selector label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-right: 1.5rem;
+      cursor: pointer;
+    }
+    .format-selector input[type="radio"] {
+      accent-color: #f43f5e;
+      margin-right: 0.3rem;
+    }
+    .image-preview {
+      display: none;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .image-preview img {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+    }
+    .error { color: #ef4444; }
+    @media (max-width: 600px) {
+      .metadata-grid { grid-template-columns: 1fr; }
+      .tool-container { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back-link"><i class="ph ph-arrow-left"></i> Back to Shrine</a>
+
+  <div style="margin-top: 5rem; width: 100%;">
+    <div class="tool-header">
+      <h1 style="color: #fff; font-size: 2.5rem; margin-bottom: 0.5rem;">Whiteout</h1>
+      <p style="color: var(--text-muted);">Strip EXIF metadata from images for complete privacy.</p>
+    </div>
+
+    <div class="tool-container">
+      <div class="upload-area" id="dropzone">
+        <i class="ph ph-shield-check"></i>
+        <h3>Drop your image here</h3>
+        <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">Supports JPEG, PNG, TIFF, WebP</p>
+        <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.tiff,.tif,.webp" style="display: none;">
+      </div>
+
+      <div class="image-preview" id="imagePreview">
+        <img id="previewImg" alt="Preview">
+      </div>
+
+      <div class="metadata-section" id="metadataSection">
+        <h3><i class="ph ph-magnifying-glass"></i> Metadata Comparison</h3>
+        <div class="metadata-grid">
+          <div class="metadata-col">
+            <h4>Original</h4>
+            <table class="metadata-table" id="originalMeta"></table>
+          </div>
+          <div class="metadata-col">
+            <h4>After Whiteout</h4>
+            <table class="metadata-table" id="cleanedMeta"></table>
+          </div>
+        </div>
+      </div>
+
+      <div class="format-selector" id="formatSelector">
+        <label><input type="radio" name="format" value="jpeg" checked> JPEG</label>
+        <label><input type="radio" name="format" value="png"> PNG</label>
+      </div>
+
+      <button id="stripBtn" class="btn">Strip & Download</button>
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

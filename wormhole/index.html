@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wormhole | Legacy Tools</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    body {
+      justify-content: flex-start;
+    }
+    .tool-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .tool-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 3rem;
+      backdrop-filter: var(--glass-blur);
+    }
+    .upload-area {
+      border: 2px dashed rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 3rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 1.5rem;
+    }
+    .upload-area:hover, .upload-area.dragover {
+      border-color: #06b6d4;
+      background: rgba(6, 182, 212, 0.05);
+    }
+    .upload-area i {
+      font-size: 3rem;
+      color: #06b6d4;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      background: #06b6d4;
+      color: #fff;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: var(--transition);
+      display: none;
+    }
+    .btn:hover {
+      background: #0891b2;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+    .btn:disabled {
+      background: #475569;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .status {
+      margin-top: 1rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .back-link {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      color: #fff;
+    }
+    .file-info {
+      display: none;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .file-info .filename {
+      color: #fff;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .file-info .filesize {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .link-output {
+      display: none;
+      margin-top: 1.5rem;
+    }
+    .link-output h3 {
+      font-size: 0.9rem;
+      color: #06b6d4;
+      margin-bottom: 0.75rem;
+    }
+    .link-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .link-row input {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+    }
+    .link-row input:focus { outline: none; }
+    .copy-btn {
+      background: #06b6d4;
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: #0891b2; }
+    .countdown {
+      display: none;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #06b6d4;
+    }
+    .countdown .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .link-warning {
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .link-warning i { color: #f97316; }
+    /* Download mode */
+    .download-mode {
+      display: none;
+      text-align: center;
+    }
+    .download-icon {
+      font-size: 4rem;
+      color: #06b6d4;
+      margin-bottom: 1rem;
+    }
+    .download-mode h3 {
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .collapse-notice {
+      display: none;
+      border: 1px dashed rgba(6, 182, 212, 0.4);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      color: #06b6d4;
+      font-size: 0.9rem;
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .collapse-notice { display: none; }
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+    .loading-spinner .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-left-color: #06b6d4;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error-notice {
+      display: none;
+      border: 1px dashed rgba(239, 68, 68, 0.4);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      color: #ef4444;
+      font-size: 0.9rem;
+    }
+    .backend-note {
+      margin-top: 1.5rem;
+      border: 1px dashed rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .backend-note code {
+      background: rgba(0,0,0,0.3);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+    .error { color: #ef4444; }
+    @media (max-width: 600px) {
+      .tool-container { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back-link"><i class="ph ph-arrow-left"></i> Back to Shrine</a>
+
+  <div style="margin-top: 5rem; width: 100%;">
+    <div class="tool-header">
+      <h1 style="color: #fff; font-size: 2.5rem; margin-bottom: 0.5rem;">Wormhole</h1>
+      <p style="color: var(--text-muted);">Temporary file dead drop. One download, one hour, then it's gone.</p>
+    </div>
+
+    <div class="tool-container">
+      <!-- Upload mode -->
+      <div class="upload-mode" id="uploadMode">
+        <div class="upload-area" id="dropzone">
+          <i class="ph ph-planet"></i>
+          <h3>Drop any file here</h3>
+          <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">Max 25 MB &mdash; any file type</p>
+          <input type="file" id="fileInput" style="display: none;">
+        </div>
+
+        <div class="file-info" id="fileInfo">
+          <div class="filename" id="fileName"></div>
+          <div class="filesize" id="fileSize"></div>
+        </div>
+
+        <button id="uploadBtn" class="btn">
+          <i class="ph ph-planet"></i> Open Wormhole
+        </button>
+
+        <div class="link-output" id="linkOutput">
+          <h3><i class="ph ph-link"></i> Wormhole link</h3>
+          <div class="link-row">
+            <input type="text" id="linkText" readonly>
+            <button class="copy-btn" id="copyBtn"><i class="ph ph-copy"></i> Copy</button>
+          </div>
+          <div class="link-warning">
+            <i class="ph ph-warning"></i>
+            This link expires after one download or one hour, whichever comes first.
+          </div>
+        </div>
+
+        <div class="countdown" id="uploadCountdown">
+          <div class="label">Wormhole collapses in</div>
+          <span id="uploadTimer">60:00</span>
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div class="backend-note">
+          Requires a Cloudflare Worker + R2 backend for file storage.
+          Files are stored encrypted and auto-deleted after expiry.
+        </div>
+      </div>
+
+      <!-- Download mode -->
+      <div class="download-mode" id="downloadMode">
+        <div class="loading-spinner" id="loadingSpinner">
+          <div class="spinner"></div>
+          <p style="color: var(--text-muted);">Opening wormhole...</p>
+        </div>
+
+        <div id="downloadContent" style="display:none;">
+          <div class="download-icon">
+            <i class="ph ph-planet"></i>
+          </div>
+          <h3>File ready for download</h3>
+          <div class="file-info" id="dlFileInfo" style="display:block; margin-top:1rem;">
+            <div class="filename" id="dlFileName"></div>
+            <div class="filesize" id="dlFileSize"></div>
+          </div>
+          <div class="countdown" id="dlCountdown" style="display:block; margin-bottom:1rem;">
+            <div class="label">Expires in</div>
+            <span id="dlTimer">--:--</span>
+          </div>
+          <button class="btn" id="downloadBtn" style="display:block;">
+            <i class="ph ph-download-simple"></i> Download File
+          </button>
+        </div>
+
+        <div class="collapse-notice" id="collapseNotice">
+          <i class="ph ph-black-hole"></i>
+          This wormhole has collapsed. The file is permanently gone.
+        </div>
+
+        <div class="error-notice" id="errorNotice"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weave | Legacy Tools</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      justify-content: flex-start;
+    }
+    .tool-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .tool-container {
+      max-width: 950px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 3rem;
+      backdrop-filter: var(--glass-blur);
+    }
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .tab {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+    .tab:hover { color: #fff; }
+    .tab.active {
+      background: rgba(236, 72, 153, 0.15);
+      border-color: #ec4899;
+      color: #ec4899;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .upload-area {
+      border: 2px dashed rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 3rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 1.5rem;
+    }
+    .upload-area:hover, .upload-area.dragover {
+      border-color: #ec4899;
+      background: rgba(236, 72, 153, 0.05);
+    }
+    .upload-area i {
+      font-size: 3rem;
+      color: #ec4899;
+      margin-bottom: 1rem;
+    }
+    .paste-area {
+      margin-bottom: 1rem;
+    }
+    .paste-area textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 1rem;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      resize: vertical;
+    }
+    .paste-area textarea:focus {
+      outline: none;
+      border-color: #ec4899;
+    }
+    .btn {
+      background: #ec4899;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn:hover {
+      background: #db2777;
+      box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
+    }
+    .btn:disabled {
+      background: #475569;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .btn-full { width: 100%; display: none; }
+    .table-controls {
+      display: none;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .table-controls.visible { display: flex; }
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.6rem 1rem;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: #ec4899;
+    }
+    .row-count {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .table-wrapper {
+      display: none;
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      margin-bottom: 1rem;
+    }
+    .table-wrapper.visible { display: block; }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .data-table thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    .data-table th {
+      background: rgba(236, 72, 153, 0.15);
+      color: #ec4899;
+      padding: 0.7rem 0.8rem;
+      text-align: left;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      border-bottom: 1px solid rgba(236, 72, 153, 0.3);
+    }
+    .data-table th:hover {
+      background: rgba(236, 72, 153, 0.25);
+    }
+    .data-table th .sort-arrow {
+      margin-left: 0.3rem;
+      font-size: 0.7rem;
+      opacity: 0.4;
+    }
+    .data-table th.sorted .sort-arrow {
+      opacity: 1;
+    }
+    .data-table td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      color: var(--text-muted);
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .data-table tbody tr:hover td {
+      background: rgba(255,255,255,0.03);
+      color: #fff;
+    }
+    .status {
+      margin-top: 1rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .back-link {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      color: #fff;
+    }
+    .error { color: #ef4444; }
+    @media (max-width: 600px) {
+      .tool-container { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back-link"><i class="ph ph-arrow-left"></i> Back to Shrine</a>
+
+  <div style="margin-top: 5rem; width: 100%;">
+    <div class="tool-header">
+      <h1 style="color: #fff; font-size: 2.5rem; margin-bottom: 0.5rem;">Weave</h1>
+      <p style="color: var(--text-muted);">Transform CSV data into beautiful, sortable, searchable tables.</p>
+    </div>
+
+    <div class="tool-container">
+      <div class="tabs">
+        <button class="tab active" data-target="uploadTab">Upload CSV</button>
+        <button class="tab" data-target="pasteTab">Paste CSV</button>
+      </div>
+
+      <div id="uploadTab" class="tab-content active">
+        <div class="upload-area" id="dropzone">
+          <i class="ph ph-table"></i>
+          <h3>Drop your CSV file here</h3>
+          <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">or click to browse files</p>
+          <input type="file" id="fileInput" accept=".csv,.tsv,.txt" style="display: none;">
+        </div>
+      </div>
+
+      <div id="pasteTab" class="tab-content">
+        <div class="paste-area">
+          <textarea id="csvText" placeholder="name,email,city&#10;John,john@example.com,New York&#10;Jane,jane@example.com,London"></textarea>
+        </div>
+        <button class="btn btn-full" id="parseBtn" style="display:block;">Parse CSV</button>
+      </div>
+
+      <div class="table-controls" id="tableControls">
+        <input type="search" class="search-input" id="searchInput" placeholder="Search rows...">
+        <span class="row-count" id="rowCount"></span>
+        <button class="btn" id="exportBtn"><i class="ph ph-file-pdf"></i> Export PDF</button>
+      </div>
+
+      <div class="table-wrapper" id="tableWrapper">
+        <table class="data-table" id="dataTable">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
