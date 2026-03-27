@@ -181,6 +181,21 @@ header p {
 .card.wordsmith:hover { --accent: #3b82f6; --accent-glow: rgba(59, 130, 246, 0.3); }
 .card.wordsmith .card-icon { color: #3b82f6; }
 
+.card.whiteout:hover { --accent: #f43f5e; --accent-glow: rgba(244, 63, 94, 0.3); }
+.card.whiteout .card-icon { color: #f43f5e; }
+
+.card.wrangle:hover { --accent: #14b8a6; --accent-glow: rgba(20, 184, 166, 0.3); }
+.card.wrangle .card-icon { color: #14b8a6; }
+
+.card.weave:hover { --accent: #ec4899; --accent-glow: rgba(236, 72, 153, 0.3); }
+.card.weave .card-icon { color: #ec4899; }
+
+.card.whisper:hover { --accent: #8b5cf6; --accent-glow: rgba(139, 92, 246, 0.3); }
+.card.whisper .card-icon { color: #8b5cf6; }
+
+.card.wormhole:hover { --accent: #06b6d4; --accent-glow: rgba(6, 182, 212, 0.3); }
+.card.wormhole .card-icon { color: #06b6d4; }
+
 @media (max-width: 768px) {
   header h1 {
     font-size: 2.5rem;
