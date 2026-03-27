@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wavelength | Legacy Tools</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    body {
+      justify-content: flex-start;
+    }
+    .tool-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .tool-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: var(--glass-blur);
+    }
+    .back-link {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      color: #fff;
+    }
+
+    /* Canvas */
+    #visualizer {
+      width: 100%;
+      height: 300px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255,255,255,0.05);
+      display: block;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Controls layout */
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 600px) {
+      .controls { grid-template-columns: 1fr; }
+    }
+
+    .control-group {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .control-group h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    /* Tone generator */
+    .freq-display {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #f97316;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .freq-unit {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.1);
+      outline: none;
+      margin: 0.75rem 0;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #f97316;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(249,115,22,0.5);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #f97316;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 0 8px rgba(249,115,22,0.5);
+    }
+
+    /* Waveform buttons */
+    .wave-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .wave-btn {
+      flex: 1;
+      min-width: 70px;
+      padding: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .wave-btn:hover {
+      border-color: #f97316;
+      color: #f97316;
+    }
+    .wave-btn.active {
+      background: rgba(249, 115, 22, 0.15);
+      border-color: #f97316;
+      color: #f97316;
+    }
+
+    /* Play button */
+    .play-btn {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .play-btn.off {
+      background: #f97316;
+      color: #000;
+    }
+    .play-btn.off:hover {
+      background: #ea580c;
+      box-shadow: 0 0 20px rgba(249,115,22,0.4);
+    }
+    .play-btn.on {
+      background: #ef4444;
+      color: #fff;
+    }
+    .play-btn.on:hover {
+      background: #dc2626;
+    }
+
+    /* Upload area */
+    .upload-area {
+      border: 2px dashed rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 1rem;
+    }
+    .upload-area:hover, .upload-area.dragover {
+      border-color: #f97316;
+      background: rgba(249,115,22,0.05);
+    }
+    .upload-area i {
+      font-size: 2rem;
+      color: #f97316;
+      margin-bottom: 0.5rem;
+    }
+    .upload-area p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .file-name {
+      font-size: 0.85rem;
+      color: #f97316;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      word-break: break-all;
+    }
+
+    /* Audio controls */
+    .audio-btn {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .audio-btn:hover {
+      border-color: #f97316;
+      color: #f97316;
+    }
+    .audio-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Viz mode selector */
+    .viz-modes {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .viz-btn {
+      padding: 0.4rem 1rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .viz-btn:hover { border-color: #f97316; color: #f97316; }
+    .viz-btn.active {
+      background: rgba(249, 115, 22, 0.15);
+      border-color: #f97316;
+      color: #f97316;
+    }
+
+    /* Volume control */
+    .volume-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .volume-row i { color: var(--text-muted); font-size: 1.2rem; }
+    .volume-row input { flex: 1; }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back-link"><i class="ph ph-arrow-left"></i> Back to Shrine</a>
+
+  <div style="margin-top: 5rem; width: 100%; padding: 0 1rem;">
+    <div class="tool-header">
+      <h1 style="color: #fff; font-size: 2.5rem; margin-bottom: 0.5rem;">Wavelength</h1>
+      <p style="color: var(--text-muted);">Audio visualizer & tone generator. Pure Web Audio API, zero cloud.</p>
+    </div>
+
+    <div class="tool-container">
+      <!-- Visualization Mode -->
+      <div class="viz-modes">
+        <button class="viz-btn active" data-mode="bars">Bars</button>
+        <button class="viz-btn" data-mode="wave">Waveform</button>
+        <button class="viz-btn" data-mode="circle">Radial</button>
+      </div>
+
+      <!-- Canvas -->
+      <canvas id="visualizer"></canvas>
+
+      <!-- Controls -->
+      <div class="controls">
+        <!-- Tone Generator -->
+        <div class="control-group">
+          <h3><i class="ph ph-waveform"></i> Tone Generator</h3>
+
+          <div class="freq-display" id="freqDisplay">440 <span class="freq-unit">Hz</span></div>
+
+          <input type="range" id="freqSlider" min="20" max="2000" value="440" step="1">
+
+          <div class="wave-buttons">
+            <button class="wave-btn active" data-wave="sine">Sine</button>
+            <button class="wave-btn" data-wave="square">Square</button>
+            <button class="wave-btn" data-wave="sawtooth">Saw</button>
+            <button class="wave-btn" data-wave="triangle">Tri</button>
+          </div>
+
+          <div class="volume-row">
+            <i class="ph ph-speaker-low"></i>
+            <input type="range" id="volumeSlider" min="0" max="100" value="30">
+            <i class="ph ph-speaker-high"></i>
+          </div>
+
+          <button id="toneBtn" class="play-btn off" style="margin-top: 1rem;">
+            <i class="ph ph-play"></i> Play Tone
+          </button>
+        </div>
+
+        <!-- Audio File -->
+        <div class="control-group">
+          <h3><i class="ph ph-music-note"></i> Audio File</h3>
+
+          <div class="upload-area" id="dropzone">
+            <i class="ph ph-upload-simple"></i>
+            <p>Drop MP3, WAV, OGG, or FLAC</p>
+            <input type="file" id="fileInput" accept="audio/*" style="display: none;">
+          </div>
+
+          <div class="file-name" id="fileName" style="display: none;"></div>
+
+          <button id="playFileBtn" class="audio-btn" disabled style="margin-bottom: 0.5rem;">
+            <i class="ph ph-play"></i> Play
+          </button>
+          <button id="stopFileBtn" class="audio-btn" disabled>
+            <i class="ph ph-stop"></i> Stop
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

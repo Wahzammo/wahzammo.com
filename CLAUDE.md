@@ -16,18 +16,13 @@ wahzammo.com/
 ├── style.css               ← shared design tokens & glassmorphic theme
 ├── wallbreaker/            ← vanilla HTML/JS (Excel unlocker via Pyodide)
 ├── warpspeed/              ← vanilla HTML/JS (YouTube MP3 → Cloud Run backend)
-├── wishlist/               ← vanilla HTML/JS (Amazon curator → CF Worker backend)
+├── wavelength/             ← vanilla HTML/JS (audio visualizer + tone generator)
 ├── wordsmith/              ← vanilla HTML/JS (PDF/DOCX converter)
 ├── wipeout/                ← React 19 + Vite (AI background removal)
 │   ├── package.json
 │   ├── vite.config.ts      ← MUST have base: '/wipeout/'
 │   ├── src/
 │   └── dist/               ← build output (git-ignored)
-├── workers/
-│   └── wishlist/           ← Cloudflare Worker (Amazon search proxy)
-│       ├── wrangler.toml
-│       ├── package.json
-│       └── src/index.ts
 ├── services/
 │   └── warpspeed/          ← GCP Cloud Run (yt-dlp MP3 backend)
 │       ├── Dockerfile
@@ -61,17 +56,10 @@ wahzammo.com/
 ### Hosting
 
 - **GitHub Pages** via `actions/deploy-pages` (free, no gh-pages branch)
-- **Cloudflare Workers** for the Wishlist backend (free tier: 100K req/day)
 - **GCP Cloud Run** for the Warpspeed backend (free tier: 2M req/month, $5 budget cap)
 - Everything that can run client-side MUST run client-side
 
 ### Backend Services
-
-#### Wishlist — Cloudflare Worker
-- Scrapes Amazon search results, returns JSON array of products
-- Frontend has mock-data fallback if worker is unreachable
-- Deploy: `cd workers/wishlist && npx wrangler deploy`
-- After deploy, update the production URL in `wishlist/script.js`
 
 #### Warpspeed — GCP Cloud Run
 - Docker container with Python + yt-dlp + ffmpeg
@@ -88,9 +76,6 @@ cd wipeout && npm run dev
 
 # Build Wipeout only
 cd wipeout && npm run build
-
-# Local dev for Wishlist worker
-cd workers/wishlist && npm install && npx wrangler dev
 
 # Local dev for Warpspeed (Docker)
 cd services/warpspeed && docker build -t warpspeed . && docker run -p 8080:8080 warpspeed
