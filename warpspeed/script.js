@@ -4,8 +4,11 @@ const statusArea = document.getElementById('statusArea');
 const spinner = document.getElementById('spinner');
 const statusText = document.getElementById('statusText');
 
-// Replace this with the actual deployed worker URL later
-const WORKER_URL = 'https://your-yt-worker.workers.dev/api/convert';
+// After deploying to Cloud Run, replace the production URL below.
+// Local dev: cd services/warpspeed && python app.py
+const WORKER_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:8080/api/convert'
+  : 'https://warpspeed-REPLACE_AFTER_DEPLOY.a.run.app/api/convert';
 
 convertBtn.addEventListener('click', async () => {
   const url = ytUrlInput.value.trim();

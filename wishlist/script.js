@@ -5,8 +5,11 @@ const spinner = document.getElementById('spinner');
 const statusText = document.getElementById('statusText');
 const productGrid = document.getElementById('productGrid');
 
-// Replace this with the actual deployed Cloudflare worker URL
-const WORKER_URL = 'https://your-amazon-worker.workers.dev/api/search';
+// After deploying the CF Worker, replace the production URL below.
+// Local dev: cd workers/wishlist && npx wrangler dev
+const WORKER_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:8787/api/search'
+  : 'https://wishlist-worker.aaron-826.workers.dev/api/search';
 
 searchBtn.addEventListener('click', async () => {
   const topic = topicInput.value.trim();
