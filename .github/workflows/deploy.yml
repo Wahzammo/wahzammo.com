@@ -48,7 +48,7 @@ jobs:
           # Copy vanilla tools (no build needed)
           cp -r wallbreaker _site/
           cp -r warpspeed _site/
-          cp -r wishlist _site/
+          cp -r wavelength _site/
           cp -r wordsmith _site/
 
           # Copy React island build outputs
