@@ -58,7 +58,7 @@ jobs:
           touch _site/.nojekyll
 
           # Custom domain (uncomment when DNS is configured)
-          # echo "wahzammo.com" > _site/CNAME
+          echo "wahzammo.com" > _site/CNAME
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
