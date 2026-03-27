@@ -1,0 +1,77 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ---- Build React Islands ----
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Wipeout deps
+        run: npm install
+        working-directory: wipeout
+
+      - name: Build Wipeout
+        run: npm run build
+        working-directory: wipeout
+
+      # ---- Assemble Site ----
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+
+          # Copy static shell
+          cp index.html _site/
+          cp style.css _site/
+          cp LICENSE _site/
+
+          # Copy vanilla tools (no build needed)
+          cp -r wallbreaker _site/
+          cp -r warpspeed _site/
+          cp -r wishlist _site/
+          cp -r wordsmith _site/
+
+          # Copy React island build outputs
+          cp -r wipeout/dist _site/wipeout
+
+          # Prevent Jekyll processing
+          touch _site/.nojekyll
+
+          # Custom domain (uncomment when DNS is configured)
+          # echo "wahzammo.com" > _site/CNAME
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
