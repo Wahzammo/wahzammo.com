@@ -1,6 +1,6 @@
 const WORKER_URL = window.location.hostname === 'localhost'
   ? 'http://localhost:8787'
-  : 'https://wormhole-worker.REPLACE_AFTER_DEPLOY.workers.dev';
+  : 'https://wormhole-worker.aaron-826.workers.dev';
 
 const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25 MB
 

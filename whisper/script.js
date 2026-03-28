@@ -1,6 +1,6 @@
 const WORKER_URL = window.location.hostname === 'localhost'
   ? 'http://localhost:8787'
-  : 'https://whisper-worker.REPLACE_AFTER_DEPLOY.workers.dev';
+  : 'https://whisper-worker.aaron-826.workers.dev';
 
 // Utility: ArrayBuffer <-> Base64URL
 function bufToBase64url(buf) {
