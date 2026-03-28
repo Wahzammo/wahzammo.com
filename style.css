@@ -175,9 +175,6 @@ header p {
 .card.wipeout:hover { --accent: #eab308; --accent-glow: rgba(234, 179, 8, 0.3); }
 .card.wipeout .card-icon { color: #eab308; }
 
-.card.wavelength:hover { --accent: #f97316; --accent-glow: rgba(249, 115, 22, 0.3); }
-.card.wavelength .card-icon { color: #f97316; }
-
 .card.wordsmith:hover { --accent: #3b82f6; --accent-glow: rgba(59, 130, 246, 0.3); }
 .card.wordsmith .card-icon { color: #3b82f6; }
 
