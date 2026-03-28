@@ -1,0 +1,8 @@
+name = "wormhole-worker"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+
+# After running: wrangler r2 bucket create wormhole-files
+r2_buckets = [
+  { binding = "WORMHOLE_BUCKET", bucket_name = "wormhole-files" }
+]
