@@ -5,5 +5,5 @@ compatibility_date = "2024-12-01"
 # After running: wrangler kv namespace create WHISPER_KV
 # Paste the output id below
 kv_namespaces = [
-  { binding = "WHISPER_KV", id = "REPLACE_WITH_KV_NAMESPACE_ID" }
+  { binding = "WHISPER_KV", id = "a10f1192f59c446382dd0ac27e80fbd1" }
 ]
