@@ -45,6 +45,9 @@ jobs:
           cp style.css _site/
           cp LICENSE _site/
 
+          # Copy public assets (brick wall image, etc.)
+          cp -r public _site/
+
           # Copy vanilla tools (no build needed)
           cp -r wallbreaker _site/
           cp -r warpspeed _site/
