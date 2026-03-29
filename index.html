@@ -32,7 +32,7 @@
 
     /* ── SCENE (CRT content column) ── */
     .scene {
-      width: min(540px, 100%);
+      width: min(820px, 100%);
       height: 100vh;
       height: 100dvh;
       margin: 0 auto;
@@ -383,49 +383,9 @@
       box-shadow: 0 1px 4px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.2);
     }
 
-    /* ── FLOOR ── */
+    /* ── SPACER (brick wall below cabinet) ── */
     .floor {
       flex: 1;
-      margin-top: 0;
-      padding: 20px 20px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background-color: #6b3e1e;
-      background-image:
-        repeating-linear-gradient(
-          90deg,
-          transparent 0px,
-          transparent 1px,
-          rgba(255,255,255,0.03) 1px,
-          rgba(255,255,255,0.03) 2px
-        ),
-        repeating-linear-gradient(
-          180deg,
-          transparent 0px,
-          transparent 38px,
-          rgba(40,18,6,0.7) 38px,
-          rgba(40,18,6,0.7) 42px
-        ),
-        repeating-linear-gradient(
-          170deg,
-          rgba(120,65,25,0.2) 0px,
-          rgba(80,35,10,0.15) 80px,
-          rgba(140,80,30,0.2) 160px
-        );
-      box-shadow: inset 0 8px 20px rgba(0,0,0,0.5);
-      border-top: 3px solid rgba(30,12,4,0.8);
-    }
-
-    .floor-text {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.55rem;
-      color: rgba(255,220,160,0.3);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      text-align: center;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
     }
 
     /* ── MOBILE ADJUSTMENTS ── */
@@ -606,9 +566,7 @@
     <div class="cabinet-base"></div>
   </div>
 
-  <div class="floor">
-    <div class="floor-text">wahzammo.com &middot; browser-native &middot; no tracking &middot; no cloud &middot; just tools</div>
-  </div>
+  <div class="floor"></div>
 
 </div>
 
