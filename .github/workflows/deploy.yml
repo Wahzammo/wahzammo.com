@@ -50,7 +50,8 @@ jobs:
 
           # Copy vanilla tools (no build needed)
           cp -r wallbreaker _site/
-          cp -r warpspeed _site/
+          cp -r widget _site/
+          cp -r classified _site/
           cp -r wordsmith _site/
           cp -r whiteout _site/
           cp -r wrangle _site/
