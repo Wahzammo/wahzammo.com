@@ -34,7 +34,7 @@
 
   /* ── SCENE (CRT content column) ── */
   .scene {
-    width: min(660px, 100%);
+    width: min(900px, 100%);
     height: 100vh;
     height: 100dvh;
     margin: 0 auto;
@@ -210,12 +210,13 @@
     }
   }
 
-  /* JS-toggled open state (mobile tap — no translateX so face stays tappable) */
+  /* JS-toggled open state (mobile tap) */
   .drawer-wrap.open .drawer {
+    transform: translateY(2px) translateX(16px);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.55),
       inset 0 -1px 0 rgba(0,0,0,0.15),
-      0 4px 8px rgba(0,0,0,0.4),
+      -2px 4px 8px rgba(0,0,0,0.5),
       0 1px 0 rgba(255,255,255,0.3);
   }
 
@@ -462,14 +463,14 @@
   .footer {
     flex: 1;
     width: 100%;
-    padding: 16px 20px 24px;
+    padding: 20px 20px 24px;
     text-align: center;
     background: transparent;
   }
 
   .floor-text {
     font-family: 'Permanent Marker', cursive;
-    font-size: clamp(0.6rem, 1.6vw, 0.75rem);
+    font-size: clamp(0.85rem, 2.2vw, 1rem);
     color: #120a04;
     opacity: 0.75;
     transform: rotate(-0.5deg);
@@ -674,7 +675,7 @@
 
   <div class="footer">
     <div class="social-links">
-      <a class="social-link" href="https://linkedin.com/in/aaron-clifft" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="social-link" href="https://linkedin.com/in/aaronjclifft" target="_blank" rel="noopener">LinkedIn</a>
       <a class="social-link" href="https://twitter.com/wahzammo" target="_blank" rel="noopener">Twitter</a>
       <a class="social-link" href="https://ko-fi.com/wahzammo" target="_blank" rel="noopener">Ko-fi</a>
     </div>
@@ -688,11 +689,8 @@
 
 <script>
   document.querySelectorAll('.drawer-wrap').forEach(wrap => {
-    wrap.querySelector('.drawer').addEventListener('click', (e) => {
-      e.stopPropagation();
-      const wasOpen = wrap.classList.contains('open');
-      document.querySelectorAll('.drawer-wrap.open').forEach(w => w.classList.remove('open'));
-      if (!wasOpen) wrap.classList.add('open');
+    wrap.querySelector('.drawer').addEventListener('click', () => {
+      wrap.classList.toggle('open');
     });
   });
 
