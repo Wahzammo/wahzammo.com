@@ -1,191 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WAHZAMMO — Browser Utilities</title>
-  <meta name="description" content="Browser-native utility tools. No install, no cloud, no nonsense. Privacy-first tools that run locally in your browser.">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --chrome-light: #f0f0f0;
-      --chrome-mid: #c8c8c8;
-      --chrome-dark: #888;
-      --chrome-shadow: #555;
-      --steel-base: #b0b4b8;
-      --steel-dark: #7a7e82;
-      --steel-shine: #e8ecf0;
-      --drawer-face: linear-gradient(180deg, #d8dce0 0%, #b8bcc2 40%, #a8acb2 60%, #c0c4c8 100%);
-      --bg-dark: #1a1a1a;
-      --accent: #e8a020;
-      --accent-glow: #ffbe40;
-      --rivet: #909498;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wahzammo's Workshop</title>
+<meta name="description" content="Browser-native utility tools. No install, no cloud, no nonsense. Privacy-first tools that run locally in your browser.">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600&family=Share+Tech+Mono&family=Permanent+Marker&family=Sacramento&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --chrome-light: #f0f0f0;
+    --chrome-mid: #c8c8c8;
+    --chrome-dark: #888;
+    --chrome-shadow: #555;
+    --steel-base: #b0b4b8;
+    --steel-dark: #7a7e82;
+    --steel-shine: #e8ecf0;
+    --drawer-face: linear-gradient(180deg, #d8dce0 0%, #b8bcc2 40%, #a8acb2 60%, #c0c4c8 100%);
+    --drawer-open: linear-gradient(180deg, #c0c4c8 0%, #a8acb2 100%);
+    --bg-dark: #1a1a1a;
+    --accent: #e8a020;
+    --accent-glow: #ffbe40;
+    --rivet: #909498;
+  }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      background: #000;
-    }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: 'Oswald', sans-serif;
+  }
 
-    /* ── SCENE (CRT content column) ── */
-    .scene {
-      width: min(820px, 100%);
-      height: 100vh;
-      height: 100dvh;
-      margin: 0 auto;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      background-color: #2a1a0a;
-      background-image: url('/public/images/brick-wall.jpg');
-      background-repeat: repeat;
-      background-size: 400px auto;
-    }
+  /* ── SCENE (CRT content column) ── */
+  .scene {
+    width: min(660px, 100%);
+    height: 100vh;
+    height: 100dvh;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 20px 0;
+    position: relative;
+    background-color: #2a1a0a;
+    background-image: url('/public/images/brick-wall.jpg');
+    background-repeat: repeat;
+    background-size: 400px auto;
+  }
 
-    /* Vignette overlay */
-    .scene::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.45) 100%);
-    }
+  /* Subtle vignette + grime */
+  .scene::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.45) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  }
 
-    header, .cabinet, .floor {
-      position: relative;
-      z-index: 1;
-      flex-shrink: 0;
-    }
+  header, .cabinet, .footer {
+    position: relative;
+    z-index: 1;
+  }
 
-    /* ── HEADER ── */
-    header {
-      text-align: center;
-      padding: 20px 20px 12px;
-    }
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
 
-    .logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.8rem, 10vw, 5rem);
-      letter-spacing: 0.08em;
-      background: linear-gradient(180deg,
-        #ffffff 0%,
-        #e0e4e8 20%,
-        #a8acb0 45%,
-        #d8dce0 55%,
-        #f0f0f0 70%,
-        #888 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.9));
-      line-height: 1;
-    }
+  /* ── NEON SIGN LOGO ── */
+  .logo-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
 
-    .tagline {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--accent);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-top: 5px;
-      opacity: 0.85;
-    }
+  .logo {
+    font-family: 'Sacramento', cursive;
+    font-size: clamp(3rem, 9vw, 5.5rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    position: relative;
+    z-index: 2;
+    padding: 6px 12px;
+    line-height: 1.1;
+    color: rgba(255,255,255,0.95);
+    text-shadow:
+      0 0 2px #fff,
+      0 0 4px #fff,
+      0 0 8px #b8fff8,
+      0 0 14px #60ffee,
+      0 0 25px #00e8d8,
+      0 0 45px #00ccbb,
+      0 0 80px rgba(0,210,200,0.4),
+      0 0 120px rgba(0,180,170,0.2);
+    animation: neon-flicker 8s infinite;
+  }
 
-    /* ── CABINET SHELL ── */
-    .cabinet {
-      width: min(500px, calc(100% - 32px));
-      margin: 0 auto;
-      background: linear-gradient(180deg, #c0c4c8 0%, #9ca0a4 100%);
-      border-radius: 8px 8px 4px 4px;
-      padding: 16px 16px 20px;
-      box-shadow:
-        0 0 0 1px #707478,
-        4px 4px 0 0 #606468,
-        8px 8px 0 0 #50545a,
-        0 20px 60px rgba(0,0,0,0.8),
-        inset 0 1px 0 rgba(255,255,255,0.5);
-      position: relative;
-    }
+  @keyframes neon-flicker {
+    0%, 89%, 91%, 93%, 100% { opacity: 1; filter: brightness(1); }
+    90%   { opacity: 0.7;  filter: brightness(0.8); }
+    92%   { opacity: 0.95; filter: brightness(1.05); }
+    94%   { opacity: 0.6;  filter: brightness(0.75); }
+    95%   { opacity: 1;    filter: brightness(1); }
+  }
 
-    /* Cabinet top rim */
-    .cabinet::before {
-      content: '';
-      display: block;
-      height: 12px;
-      background: linear-gradient(180deg, #e0e4e8 0%, #b0b4b8 60%, #989c9e 100%);
-      border-radius: 6px 6px 0 0;
-      margin: -16px -16px 12px;
-      border-bottom: 1px solid #888;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
-    }
+  /* POSCA paint pen on wall */
+  .tagline {
+    font-family: 'Permanent Marker', cursive;
+    font-size: clamp(0.6rem, 1.8vw, 0.8rem);
+    color: #1a1008;
+    letter-spacing: 0.05em;
+    margin-top: 6px;
+    opacity: 0.82;
+    transform: rotate(-0.8deg);
+    display: inline-block;
+    text-shadow:
+      1px 1px 0 rgba(0,0,0,0.2),
+      -0.5px 0.5px 0 rgba(0,0,0,0.15),
+      0.5px -0.5px 2px rgba(0,0,0,0.1);
+    filter: url(#roughen);
+  }
 
-    /* Cabinet brand plate */
-    .brand-plate {
-      text-align: center;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.55rem;
-      letter-spacing: 0.3em;
-      color: var(--chrome-shadow);
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      opacity: 0.7;
-    }
+  /* ── CABINET SHELL ── */
+  .cabinet {
+    width: min(520px, 100%);
+    background: linear-gradient(180deg, #c0c4c8 0%, #9ca0a4 100%);
+    border-radius: 8px 8px 4px 4px;
+    padding: 18px 18px 22px;
+    box-shadow:
+      0 0 0 1px #707478,
+      4px 4px 0 0 #606468,
+      8px 8px 0 0 #50545a,
+      0 20px 60px rgba(0,0,0,0.8),
+      inset 0 1px 0 rgba(255,255,255,0.5);
+    position: relative;
+    flex-shrink: 0;
+  }
 
-    /* ── DRAWER ── */
-    .drawer-wrap {
-      margin-bottom: 8px;
-      position: relative;
-    }
+  /* Cabinet top rim */
+  .cabinet::before {
+    content: '';
+    display: block;
+    height: 14px;
+    background: linear-gradient(180deg, #e0e4e8 0%, #b0b4b8 60%, #989c9e 100%);
+    border-radius: 6px 6px 0 0;
+    margin: -18px -18px 14px;
+    border-bottom: 1px solid #888;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+  }
 
-    .drawer-wrap:last-of-type {
-      margin-bottom: 0;
-    }
+  /* Cabinet brand plate */
+  .brand-plate {
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--chrome-shadow);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
 
-    .drawer {
-      background: var(--drawer-face);
-      border-radius: 4px;
-      border: 1px solid #909498;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.55),
-        inset 0 -1px 0 rgba(0,0,0,0.15),
-        2px 2px 4px rgba(0,0,0,0.3),
-        0 1px 0 rgba(255,255,255,0.3);
-      cursor: pointer;
-      overflow: hidden;
-      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  box-shadow 0.35s ease;
-      position: relative;
-      z-index: 2;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
+  /* ── DRAWER ── */
+  .drawer-wrap {
+    margin-bottom: 10px;
+    position: relative;
+  }
 
-    /* Hover on desktop */
-    @media (hover: hover) {
-      .drawer-wrap:hover .drawer,
-      .drawer-wrap:focus-within .drawer {
-        transform: translateY(2px) translateX(16px);
-        box-shadow:
-          inset 0 1px 0 rgba(255,255,255,0.55),
-          inset 0 -1px 0 rgba(0,0,0,0.15),
-          -2px 4px 8px rgba(0,0,0,0.5),
-          0 1px 0 rgba(255,255,255,0.3);
-      }
+  .drawer {
+    background: var(--drawer-face);
+    border-radius: 4px;
+    border: 1px solid #909498;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.55),
+      inset 0 -1px 0 rgba(0,0,0,0.15),
+      2px 2px 4px rgba(0,0,0,0.3),
+      0 1px 0 rgba(255,255,255,0.3);
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.35s ease;
+    position: relative;
+    z-index: 2;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-      .drawer-wrap:hover .drawer-panel,
-      .drawer-wrap:focus-within .drawer-panel {
-        max-height: 200px;
-        opacity: 1;
-      }
-    }
-
-    /* JS-toggled open state (mobile tap) */
-    .drawer-wrap.open .drawer {
+  /* Hover on desktop */
+  @media (hover: hover) {
+    .drawer-wrap:hover .drawer {
       transform: translateY(2px) translateX(16px);
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.55),
@@ -194,229 +204,312 @@
         0 1px 0 rgba(255,255,255,0.3);
     }
 
-    .drawer-wrap.open .drawer-panel {
-      max-height: 200px;
+    .drawer-wrap:hover .drawer-panel {
+      max-height: 240px;
       opacity: 1;
     }
+  }
 
-    /* Drawer gloss overlay */
-    .drawer::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 50%;
-      background: linear-gradient(180deg,
-        rgba(255,255,255,0.35) 0%,
-        rgba(255,255,255,0.05) 100%);
-      border-radius: 4px 4px 0 0;
-      pointer-events: none;
-      z-index: 1;
+  /* JS-toggled open state (mobile tap) */
+  .drawer-wrap.open .drawer {
+    transform: translateY(2px) translateX(16px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.55),
+      inset 0 -1px 0 rgba(0,0,0,0.15),
+      -2px 4px 8px rgba(0,0,0,0.5),
+      0 1px 0 rgba(255,255,255,0.3);
+  }
+
+  .drawer-wrap.open .drawer-panel {
+    max-height: 240px;
+    opacity: 1;
+  }
+
+  /* Drawer gloss overlay */
+  .drawer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.35) 0%,
+      rgba(255,255,255,0.05) 100%);
+    border-radius: 4px 4px 0 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .drawer-face {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    gap: 12px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Rivets */
+  .rivet {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #d0d4d8, var(--rivet) 60%, #606468);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+  }
+
+  /* Drawer handle */
+  .handle {
+    flex: 0 0 auto;
+    height: 22px;
+    width: 90px;
+    background: linear-gradient(180deg,
+      #e8ecf0 0%,
+      #c0c4c8 30%,
+      #a0a4a8 60%,
+      #c8ccce 85%,
+      #e0e4e8 100%);
+    border-radius: 3px;
+    border: 1px solid #888;
+    box-shadow:
+      0 2px 4px rgba(0,0,0,0.4),
+      inset 0 1px 0 rgba(255,255,255,0.6),
+      inset 0 -1px 0 rgba(0,0,0,0.2);
+    position: relative;
+  }
+
+  .handle::after {
+    content: '';
+    position: absolute;
+    inset: 3px 8px;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.0) 0%,
+      rgba(255,255,255,0.15) 50%,
+      rgba(255,255,255,0.0) 100%);
+    border-radius: 2px;
+  }
+
+  .drawer-label {
+    flex: 1;
+  }
+
+  .drawer-label .cat {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--chrome-shadow);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .drawer-label .title {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #404448;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+
+  .drawer-icon {
+    font-size: 1.4rem;
+    filter: grayscale(0.3);
+    flex-shrink: 0;
+  }
+
+  /* ── OPEN DRAWER PANEL ── */
+  .drawer-panel {
+    background: linear-gradient(180deg, #1e2020 0%, #252828 100%);
+    border: 1px solid #404448;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.3s ease;
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .panel-inner {
+    padding: 12px 16px 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .tool-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 3px;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+    cursor: pointer;
+  }
+
+  .tool-link:hover {
+    background: rgba(232, 160, 32, 0.12);
+    border-color: rgba(232, 160, 32, 0.4);
+  }
+
+  .tool-link:hover .tool-name {
+    color: var(--accent-glow);
+  }
+
+  .tool-link.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .tool-emoji { font-size: 1rem; }
+
+  .tool-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: #a0a8b0;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    transition: color 0.15s;
+  }
+
+  /* ── BOTTOM PLATE ── */
+  .cabinet-base {
+    height: 12px;
+    background: linear-gradient(180deg, #808488 0%, #606468 100%);
+    border-radius: 0 0 6px 6px;
+    margin: 8px -18px -22px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  }
+
+  /* ── LOCK BADGE ── */
+  .lock-badge {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle at 40% 35%, #e0c060, #b08020);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.4);
+    z-index: 3;
+  }
+
+  /* Worn/wonky lock for bottom drawer */
+  .drawer-wrap--bottom .lock-badge {
+    transform: translateY(-50%) rotate(-8deg);
+    background: radial-gradient(circle at 40% 35%, #c8a840, #7a5a10);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+
+  /* ── SOCIAL BADGES — POSCA marker stickers on wall ── */
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .social-link {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 0.78rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 4px 10px 5px;
+    color: #f8f4ee;
+    background: rgba(10, 6, 2, 0.82);
+    border-radius: 2px;
+    transform: rotate(var(--rot, -1deg));
+    display: inline-block;
+    box-shadow:
+      2px 2px 4px rgba(0,0,0,0.5),
+      inset 0 0 0 1.5px rgba(255,255,255,0.06);
+    transition: transform 0.15s, background 0.15s;
+    position: relative;
+  }
+
+  .social-link:nth-child(1) { --rot: -1.5deg; }
+  .social-link:nth-child(2) { --rot: 0.8deg; }
+  .social-link:nth-child(3) { --rot: -0.5deg; }
+
+  .social-link:hover {
+    background: rgba(20, 10, 2, 0.95);
+    transform: rotate(0deg) scale(1.05);
+  }
+
+  /* ── FOOTER ON WALL ── */
+  .footer {
+    flex: 1;
+    width: 100%;
+    padding: 16px 20px 24px;
+    text-align: center;
+    background: transparent;
+  }
+
+  .floor-text {
+    font-family: 'Permanent Marker', cursive;
+    font-size: clamp(0.6rem, 1.6vw, 0.75rem);
+    color: #120a04;
+    opacity: 0.75;
+    transform: rotate(-0.5deg);
+    display: block;
+    text-align: center;
+    text-shadow:
+      1px 1px 0 rgba(0,0,0,0.2),
+      0.5px -0.5px 2px rgba(0,0,0,0.1);
+    letter-spacing: 0.03em;
+  }
+
+  .floor-text a {
+    color: #1a0e06;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 660px) {
+    .scene {
+      width: 100%;
     }
+  }
 
-    .drawer-face {
-      display: flex;
-      align-items: center;
-      padding: 9px 12px;
-      gap: 10px;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Rivets */
-    .rivet {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #d0d4d8, var(--rivet) 60%, #606468);
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.4);
-      flex-shrink: 0;
-    }
-
-    /* Drawer handle */
-    .handle {
-      flex: 0 0 auto;
-      height: 20px;
-      width: 80px;
-      background: linear-gradient(180deg,
-        #e8ecf0 0%,
-        #c0c4c8 30%,
-        #a0a4a8 60%,
-        #c8ccce 85%,
-        #e0e4e8 100%);
-      border-radius: 3px;
-      border: 1px solid #888;
-      box-shadow:
-        0 2px 4px rgba(0,0,0,0.4),
-        inset 0 1px 0 rgba(255,255,255,0.6),
-        inset 0 -1px 0 rgba(0,0,0,0.2);
-      position: relative;
-    }
-
-    .handle::after {
-      content: '';
-      position: absolute;
-      inset: 3px 8px;
-      background: linear-gradient(180deg,
-        rgba(255,255,255,0.0) 0%,
-        rgba(255,255,255,0.15) 50%,
-        rgba(255,255,255,0.0) 100%);
-      border-radius: 2px;
-    }
-
-    .drawer-label {
-      flex: 1;
-    }
-
-    .drawer-label .cat {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.55rem;
-      color: var(--chrome-shadow);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      opacity: 0.7;
-    }
-
-    .drawer-label .title {
-      font-family: 'Oswald', sans-serif;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: #404448;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      line-height: 1.1;
-    }
-
-    .drawer-icon {
-      font-size: 1.2rem;
-      filter: grayscale(0.3);
-      flex-shrink: 0;
-    }
-
-    /* ── OPEN DRAWER PANEL ── */
-    .drawer-panel {
-      background: linear-gradient(180deg, #1e2020 0%, #252828 100%);
-      border: 1px solid #404448;
-      border-top: none;
-      border-radius: 0 0 4px 4px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  opacity 0.3s ease;
-      opacity: 0;
-      position: relative;
-      z-index: 1;
-    }
-
-    .panel-inner {
-      padding: 10px 14px 12px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 7px;
-    }
-
-    .tool-link {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 7px 9px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 3px;
-      text-decoration: none;
-      transition: background 0.15s, border-color 0.15s;
-      cursor: pointer;
-    }
-
-    .tool-link:hover {
-      background: rgba(232, 160, 32, 0.12);
-      border-color: rgba(232, 160, 32, 0.4);
-    }
-
-    .tool-link:hover .tool-name {
-      color: var(--accent-glow);
-    }
-
-    .tool-link.disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-
-    .tool-emoji { font-size: 0.9rem; }
-
-    .tool-name {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.6rem;
-      color: #a0a8b0;
-      letter-spacing: 0.05em;
-      line-height: 1.2;
-      transition: color 0.15s;
-    }
-
-    /* ── BOTTOM PLATE ── */
-    .cabinet-base {
-      height: 10px;
-      background: linear-gradient(180deg, #808488 0%, #606468 100%);
-      border-radius: 0 0 6px 6px;
-      margin: 8px -16px -20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-    }
-
-    /* ── LOCK BADGE ── */
-    .lock-badge {
-      position: absolute;
-      top: 50%;
-      right: 14px;
-      transform: translateY(-50%);
-      width: 12px;
-      height: 12px;
-      background: radial-gradient(circle at 40% 35%, #e0c060, #b08020);
-      border-radius: 50%;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.4);
-      z-index: 3;
-    }
-
-    /* Worn/tilted lock for bottom drawer */
-    .drawer-wrap--bottom .lock-badge {
-      transform: translateY(-50%) rotate(12deg);
-      background: radial-gradient(circle at 40% 35%, #c8a840, #7a5a10);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.2);
-    }
-
-    /* ── SPACER (brick wall below cabinet) ── */
-    .floor {
-      flex: 1;
-    }
-
-    /* ── MOBILE ADJUSTMENTS ── */
-    @media (max-width: 540px) {
-      .scene {
-        width: 100%;
-      }
-    }
-
-    @media (max-height: 680px) {
-      header {
-        padding: 12px 20px 8px;
-      }
-      .logo {
-        font-size: clamp(2rem, 9vw, 3.5rem);
-      }
-      .drawer-face {
-        padding: 7px 12px;
-      }
-      .drawer-wrap {
-        margin-bottom: 6px;
-      }
-    }
-  </style>
+  @media (max-height: 700px) {
+    header { margin-bottom: 12px; }
+    .scene { padding-top: 14px; }
+    .logo { font-size: clamp(2.4rem, 8vw, 4rem); }
+    .drawer-face { padding: 8px 12px; }
+    .drawer-wrap { margin-bottom: 8px; }
+    .brand-plate { margin-bottom: 10px; }
+    .footer { padding: 10px 20px 16px; }
+  }
+</style>
 </head>
 <body>
+
+<!-- SVG filter for POSCA paint roughness -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="roughen" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" seed="2" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
 
 <div class="scene">
 
   <header>
-    <div class="logo">WAHZAMMO</div>
+    <div class="logo-wrap">
+      <div class="logo">Wahzammo's Workshop</div>
+    </div>
     <div class="tagline">// Browser-native utility tools &mdash; no install, no cloud, no nonsense //</div>
   </header>
 
@@ -566,18 +659,24 @@
     <div class="cabinet-base"></div>
   </div>
 
-  <div class="floor"></div>
+  <div class="footer">
+    <div class="social-links">
+      <a class="social-link" href="https://linkedin.com/in/aaron-clifft" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="social-link" href="https://twitter.com/wahzammo" target="_blank" rel="noopener">Twitter</a>
+      <a class="social-link" href="https://ko-fi.com/wahzammo" target="_blank" rel="noopener">Ko-fi</a>
+    </div>
+    <div class="floor-text">built in melbourne &middot; no tracking &middot; no cloud &middot; just tools</div>
+    <div class="floor-text" style="margin-top:6px;">
+      <a href="https://northmetrotech.com.au" target="_blank" rel="noopener">northmetrotech.com.au</a>
+    </div>
+  </div>
 
 </div>
 
 <script>
-  // Tap-to-open for touch devices
-  document.querySelectorAll('.drawer').forEach(drawer => {
-    drawer.addEventListener('click', () => {
-      const wrap = drawer.closest('.drawer-wrap');
-      const wasOpen = wrap.classList.contains('open');
-      document.querySelectorAll('.drawer-wrap').forEach(w => w.classList.remove('open'));
-      if (!wasOpen) wrap.classList.add('open');
+  document.querySelectorAll('.drawer-wrap').forEach(wrap => {
+    wrap.querySelector('.drawer').addEventListener('click', () => {
+      wrap.classList.toggle('open');
     });
   });
 </script>
