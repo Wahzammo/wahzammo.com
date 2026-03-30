@@ -272,39 +272,6 @@
   gap: 0.5rem;
 }
 
-/* Ko-fi section */
-.kofi-section {
-  max-width: 800px;
-  margin: 2rem auto 0;
-  text-align: center;
-  padding: 1.5rem 0;
-  border-top: 1px solid var(--card-border);
-}
-.kofi-section p {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 1rem;
-}
-.kofi-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 10px;
-  background: #f45d22;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: var(--transition);
-}
-.kofi-btn:hover {
-  background: #d44d1a;
-  transform: scale(1.03);
-}
-.kofi-btn img {
-  height: 20px;
-}
 
 /* Responsive */
 @media (max-width: 600px) {
