@@ -693,6 +693,13 @@
       wrap.classList.toggle('open');
     });
   });
+
+  // Tap outside any drawer to close all
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.drawer-wrap')) {
+      document.querySelectorAll('.drawer-wrap.open').forEach(w => w.classList.remove('open'));
+    }
+  });
 </script>
 
 </body>

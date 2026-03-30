@@ -10,7 +10,7 @@
   let currentCanvas = null;
   let debounceTimer = null;
 
-  const EC_MAP = { L: 1, M: 0, Q: 3, H: 2 };
+  const EC_LEVELS = { L: 'L', M: 'M', Q: 'Q', H: 'H' };
 
   function setStatus(msg, type) {
     status.textContent = msg;

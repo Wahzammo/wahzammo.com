@@ -283,13 +283,6 @@ export default function App() {
           </div>
         </div>
 
-        <div className="kofi-section">
-          <p>Wipeout is free forever. Tips keep it fast.</p>
-          <a href="https://ko-fi.com/wahzammo" target="_blank" rel="noopener noreferrer" className="kofi-btn">
-            <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Ko-fi" referrerPolicy="no-referrer" />
-            Support on Ko-fi
-          </a>
-        </div>
       </div>
 
       <canvas ref={canvasRef} style={{ display: 'none' }} />
