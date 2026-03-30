@@ -362,10 +362,24 @@
     color: var(--accent-glow);
   }
 
-  .tool-link.disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    pointer-events: none;
+  .tool-link.classified {
+    opacity: 0.55;
+    animation: classified-pulse 3s ease-in-out infinite;
+  }
+
+  .tool-link.classified:hover {
+    opacity: 1;
+    background: rgba(255, 0, 0, 0.08);
+    border-color: rgba(255, 0, 0, 0.3);
+  }
+
+  .tool-link.classified:hover .tool-name {
+    color: #ff4444;
+  }
+
+  @keyframes classified-pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 0.35; }
   }
 
   .tool-emoji { font-size: 1rem; }
@@ -648,10 +662,10 @@
             <span class="tool-emoji">📱</span>
             <span class="tool-name">Widget<br>QR Code Gen</span>
           </a>
-          <span class="tool-link disabled">
+          <a class="tool-link classified" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
             <span class="tool-emoji">🔒</span>
             <span class="tool-name">???? &mdash; CLASSIFIED</span>
-          </span>
+          </a>
         </div>
       </div>
     </div>
