@@ -31,7 +31,7 @@
     }
 
     const size = parseInt(sizeSelect.value, 10);
-    const ecLevel = EC_MAP[ecSelect.value];
+    const ecLevel = EC_LEVELS[ecSelect.value];
 
     try {
       // Type 0 = auto-detect best version for the data
