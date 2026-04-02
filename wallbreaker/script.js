@@ -79,7 +79,7 @@ wb = openpyxl.load_workbook('/input.xlsx')
 
 # Unprotect workbook
 if wb.security:
-    wb.security.workbookPassword = None
+    wb.security.workbookPassword = ''
     wb.security.lockStructure = False
 
 # Unprotect sheets
