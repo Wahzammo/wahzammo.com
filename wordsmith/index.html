@@ -11,7 +11,7 @@
   <!-- PDF.js for Reading PDFs -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
   <!-- DOCX.js for Writing DOCX -->
-  <script src="https://unpkg.com/docx@8.2.3/build/index.js" integrity="sha384-gr3NSm5Bt8b/q1b7cyUMYZNQz9J5wxggZYDTnxr/W3BlJY0/QXvTyBpE3ALxTH69" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/docx@8.2.3/build/index.umd.js" integrity="sha384-Q0Ynt576ix2KycMPIjsvrko1+xjN6y6M7dIfqwUIfTFptvoJjT17+gci4Ano9r+K" crossorigin="anonymous"></script>
 
   <!-- Mammoth JS for Reading DOCX -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js" integrity="sha384-nFoSjZIoH3CCp8W639jJyQkuPHinJ2NHe7on1xvlUA7SuGfJAfvMldrsoAVm6ECz" crossorigin="anonymous"></script>
@@ -60,7 +60,15 @@
     }
     .back-link:hover { color: #fff; }
     
-    #hidden-render-area { display: none; }
+    #hidden-render-area {
+      display: none;
+      background: #fff;
+      color: #000;
+      padding: 1in;
+      font-family: 'Times New Roman', serif;
+      font-size: 12pt;
+      line-height: 1.6;
+    }
   </style>
 </head>
 <body>
