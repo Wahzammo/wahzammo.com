@@ -57,6 +57,15 @@
     animation: blink 0.5s 3s forwards;
     text-shadow: 0 0 5px #ff3333;
   }
+  #video-player {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    background: #000;
+    z-index: 100;
+    display: none;
+  }
   @keyframes flicker {
     0%, 95%, 100% { opacity: 1; }
     96% { opacity: 0.6; }
@@ -88,16 +97,20 @@
 </style>
 </head>
 <body>
+<video id="video-player" autoplay loop playsinline>
+  <source src="super-secret-project-stuff.mp4" type="video/mp4">
+</video>
 <div class="scanline"></div>
 <div class="screen">
   <div class="logo">CLASSIFIED</div>
   <div class="status" style="animation-delay: 0.5s">VERIFYING CLEARANCE LEVEL...</div>
   <div class="status" style="animation-delay: 1.2s">DECRYPTING SECURE CHANNEL...</div>
   <div class="bar-container"><div class="bar-fill" id="bar"></div></div>
-  <div class="warning">ACCESS GRANTED — REDIRECTING TO SECURE TERMINAL</div>
+  <div class="warning">ACCESS GRANTED — LOADING SECURE FILES</div>
 </div>
 <script>
   const bar = document.getElementById('bar');
+  const video = document.getElementById('video-player');
   let progress = 0;
   const interval = setInterval(() => {
     progress += Math.random() * 15 + 5;
@@ -106,7 +119,10 @@
     if (progress >= 100) {
       clearInterval(interval);
       setTimeout(() => {
-        window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+        document.querySelector('.screen').style.display = 'none';
+        document.querySelector('.scanline').style.display = 'none';
+        video.style.display = 'block';
+        video.play();
       }, 800);
     }
   }, 200);
