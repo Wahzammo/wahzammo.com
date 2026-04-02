@@ -6,22 +6,110 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CLASSIFIED — Wahzammo Industries</title>
 <style>
-  * { margin: 0; padding: 0; }
-  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
-  iframe {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Courier New', monospace; }
+  .screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #00ff41;
+    text-align: center;
+    padding: 2rem;
+  }
+  .logo {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: bold;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41;
+    animation: flicker 3s infinite;
+  }
+  .status {
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+    margin: 0.3rem 0;
+  }
+  .bar-container {
+    width: min(80%, 400px);
+    height: 4px;
+    background: #0a2a0a;
+    border: 1px solid #00ff41;
+    margin-top: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 0.5s 1.5s forwards;
+  }
+  .bar-fill {
     height: 100%;
-    border: none;
+    width: 0%;
+    background: #00ff41;
+    box-shadow: 0 0 8px #00ff41;
+    transition: width 0.3s linear;
+  }
+  .warning {
+    color: #ff3333;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    margin-top: 1.5rem;
+    opacity: 0;
+    animation: blink 0.5s 3s forwards;
+    text-shadow: 0 0 5px #ff3333;
+  }
+  @keyframes flicker {
+    0%, 95%, 100% { opacity: 1; }
+    96% { opacity: 0.6; }
+    97% { opacity: 1; }
+    98% { opacity: 0.4; }
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+  @keyframes blink {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 1; }
+  }
+  .scanline {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 255, 65, 0.03) 0px,
+      rgba(0, 255, 65, 0.03) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    z-index: 10;
   }
 </style>
 </head>
 <body>
-<iframe
-  src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&loop=1&playlist=dQw4w9WgXcQ&modestbranding=1"
-  allow="autoplay; encrypted-media; fullscreen"
-  allowfullscreen>
-</iframe>
+<div class="scanline"></div>
+<div class="screen">
+  <div class="logo">CLASSIFIED</div>
+  <div class="status" style="animation-delay: 0.5s">VERIFYING CLEARANCE LEVEL...</div>
+  <div class="status" style="animation-delay: 1.2s">DECRYPTING SECURE CHANNEL...</div>
+  <div class="bar-container"><div class="bar-fill" id="bar"></div></div>
+  <div class="warning">ACCESS GRANTED — REDIRECTING TO SECURE TERMINAL</div>
+</div>
+<script>
+  const bar = document.getElementById('bar');
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += Math.random() * 15 + 5;
+    if (progress > 100) progress = 100;
+    bar.style.width = progress + '%';
+    if (progress >= 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+      }, 800);
+    }
+  }, 200);
+</script>
 </body>
 </html>
